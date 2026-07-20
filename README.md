@@ -12,7 +12,7 @@ The founding principle, learned the hard way: **whoever builds a thing never sig
 
 Plus **hooks** (`hooks/`, guards + context + progress) and **orchestration** (`skills/team-execute` + autopilot).
 
-Start with **`CLAUDE.md`** (the constitution), **`agents/_ROSTER.md`** (the team), and **`guides/tooling-ue.md`** (how to drive the editor).
+Start with **`CLAUDE.md`** (the constitution), **`ROSTER.md`** (the team), and **`guides/tooling-ue.md`** (how to drive the editor).
 
 ## How it's packaged — three repos
 1. **GameClaude** (this) — the workflow. Installs as a game project's `.claude/`.
@@ -29,7 +29,7 @@ git clone <GameClaude-url> .claude
 
 ## Status — scaffold in progress
 ✅ Constitution (`CLAUDE.md`) · tool-routing + full-editor-access guide · level-design method · agent template · roster · flagship agent (`level-designer`).
-Next: author the priority agents (`producer`, `director`, `game-designer`, `tech-artist`, `tools-programmer`) and the Verify & Judge layer; port the proven trial-1 disciplines; spin out `ue-mcp-toolkit`. See `agents/_ROSTER.md` for the full build order.
+Next: author the priority agents (`producer`, `director`, `game-designer`, `tech-artist`, `tools-programmer`) and the Verify & Judge layer; port the proven trial-1 disciplines; spin out `ue-mcp-toolkit`. See `ROSTER.md` for the full build order.
 
 ---
 © 2026 Munero Limited.

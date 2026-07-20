@@ -24,7 +24,7 @@ A **spike lane** runs alongside every phase: prove risky things in isolation, re
 - You hold the gates: greenlight, slice, alpha/beta/gold, and any call that costs money, touches the public surface, or is irreversible.
 
 ## Start here
-`CLAUDE.md` (the law) → `agents/_ROSTER.md` (the team) → `guides/tooling-ue.md` (driving Unreal) → `guides/level-design.md` (how a level is specified and verified).
+`CLAUDE.md` (the law) → `ROSTER.md` (the team) → `guides/tooling-ue.md` (driving Unreal) → `guides/level-design.md` (how a level is specified and verified).
 
 ## First run
 Convene **Stage 0**: the concept. Bring the seed of an idea; the studio pressure-tests it into a pitch, pillars, and anti-goals — before a single thing is built.

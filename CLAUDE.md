@@ -61,7 +61,7 @@ Nothing downstream starts until the upstream gate passes. The **Producer** (`age
 
 ## The team
 
-The roster lives in `agents/`. Three leadership spines (Creative / Technical / Production) meet in one **Director** (owner-reserved authority); discipline departments hang off them; a builder-independent **Verify & Judge** layer gates everything. Solo, roles are *hats* one owner + the agents wear — but the hats never merge build with verify. See `agents/_ROSTER.md`.
+The roster lives in `agents/`. Three leadership spines (Creative / Technical / Production) meet in one **Director** (owner-reserved authority); discipline departments hang off them; a builder-independent **Verify & Judge** layer gates everything. Solo, roles are *hats* one owner + the agents wear — but the hats never merge build with verify. See `ROSTER.md`.
 
 ---
 
