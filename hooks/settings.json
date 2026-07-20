@@ -1,0 +1,12 @@
+{
+  "_comment": "Wire these into the game project's .claude/settings.json when installing GameClaude. Paths assume GameClaude is installed as the project's .claude/.",
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Bash", "hooks": [ { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/pretool-guard-bash.sh\"" } ] },
+      { "matcher": "Edit|Write", "hooks": [ { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/pretool-protect-paths.sh\"" } ] }
+    ],
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/sessionstart-lessons.sh\"" } ] }
+    ]
+  }
+}
