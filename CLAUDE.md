@@ -35,6 +35,7 @@ One fact, one home. Link to it; never duplicate it.
 10. **Verify claims against source.** No assertion about how the engine behaves ships unverified against engine source (`agents/engine-verifier`).
 11. **Never trust the client.** Every client-reachable endpoint is hostile until proven; each check names the exploit it prevents (`agents/security-reviewer`).
 12. **Docs are written as current.** Every doc reads as if written fresh today. Delete the wrong thing; state the right thing as fact. No changelogs, no "v2", no dated edit notes. Keep a *reason* only where it stops a mistake recurring.
+13. **Guides are living — capture the lesson immediately.** The moment you learn something the docs should have told you — an engine quirk, a gotcha, a mistake a discipline should never repeat — write it into the owning guide **in the same session**, as present-tense fact. An engine-behaviour lesson goes in `guides/unreal-engine.md` with a source citation (or `[verify]` until confirmed); a process lesson updates the relevant guide/agent. A lesson that lives only in a session, a commit message, or someone's memory is lost, and the studio repeats the mistake. This is how the knowledge base compounds instead of rotting.
 
 ---
 
