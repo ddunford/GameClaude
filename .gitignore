@@ -1,3 +1,13 @@
 .DS_Store
 *.log
 _local/
+
+# Local Claude Code state — written into a consuming project's mounted .claude/,
+# never part of the framework itself
+settings.local.json
+.gameclaude-version
+projects/
+todos/
+shell-snapshots/
+statsig/
+history.jsonl
