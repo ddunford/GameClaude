@@ -16,7 +16,7 @@ Start with **`CLAUDE.md`** (the constitution), **`ROSTER.md`** (the team), and *
 
 ## How it's packaged — three repos
 1. **GameClaude** (this) — the workflow. Installs as a game project's `.claude/`.
-2. **`ue-mcp-toolkit`** — our reusable Unreal automation (LevelAudit plugin + capture + Remote-Control config + the Fab/asset browser control). Drops into the game project's `Plugins/`. Extends Epic's in-engine MCP; does not fork it.
+2. **`ue-mcp-toolkit`** — our reusable Unreal automation (geometry/content audit + capture + PIE test harness + blockout + Remote-Control config + the Fab/asset browser control). Drops into the game project's `Plugins/`. Extends Epic's in-engine MCP; does not fork it.
 3. **The game** — the actual UE5 title. Consumes both.
 
 ## Install (into a game project)
