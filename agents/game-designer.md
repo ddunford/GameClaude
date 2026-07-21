@@ -22,7 +22,7 @@ You are the **Game Designer** — you own the *rules*. What the player does, how
 - Obey `CLAUDE.md`. Do not sign off your own system's implementation.
 
 ## Method
-- Guide: `guides/game-design.md` *(to author)* — loop design, systems, economy, the spec format.
+- Guide: `guides/game-design.md` — loop design, MDA, systems, economy, progression, and the system-spec format.
 - Modules: author reusable system contracts in `modules/` (ability, inventory, save, door…).
 - Spike a new mechanic in isolation → `creative-director` review before it enters production.
 

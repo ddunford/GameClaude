@@ -34,6 +34,37 @@
 
 9. **Drain at close.** No task is left homeless: done / moved / consciously dropped-with-reason. Then the milestone is signed off, its record kept as history.
 
+## Level work — structural verification and visual QA are different gates
+Two different questions, run as two gates in this order:
+
+- **Structural verification** asks *is it built right* — footprints, seating, collision, walkability. It needs geometry-truth metrics and a full-gravity walk, **not** rendering, so it runs **early, on an unlit level**. This is where floating / colliding / mislaid geometry is caught.
+- **Visual QA** (`qa-visual`) asks *does it read right* — massing-in-context, silhouette, the look. It needs the level to be **viewable**, so it runs **only once the level is lit**.
+
+Never fold the two into one gate. Structural defects are caught without a single light; visual judgment waits for light.
+
+### Viewable before visual QA
+A level enters visual QA only when it is in a **self-contained, viewable state — it has a saved baseline lighting rig in the level**. A saved baseline lit state is part of "blockout done / ready for QA", not a later polish-only gate. No visual QA on an unlit level.
+
+A visual verdict never rests on lighting that isn't saved in the level. `CaptureTools` injects a transient sun/fill/skylight rig to make an unlit level legible enough to shoot (`guides/tooling-ue.md`) — that crutch produces an *image*, not a QA-of-record: the same level renders black in a real viewport, so the owner cannot reproduce what the tool "passed", and green checks diverge from what the owner sees. If a level needs a rig to be seen, the rig belongs in the saved level.
+
+### Match process weight to the stakes — mechanical QA only
+Two different reviews run on built work, and only **one** of them scales to the stakes. Do not conflate them.
+
+- **Mechanical / technical QA** — the structural checks and the `qa-visual` multi-view battery. Asks *is it built right*: is it lit, does it match the spec metrics, no fall-through, no floating/colliding geometry. This one **scales to stakes** — a crude spike or whitebox gets a light structural check, not the full repeated battery. Over-ceremony on throwaway work is itself a process defect: slow and low-value. It does **not** judge craft quality and will never catch "the lighting is unmotivated / makes no sense".
+- **Senior craft / creative review** — `art-director` on the look, `creative-review` on-pitch. Asks *is it good*: is it motivated, does it make sense, is it ours. This is **not ceremony and does not scale away** — see the next section.
+
+Weight-to-stakes governs the mechanical QA. It never removes the senior craft eye.
+
+### Craft goes through the senior eye before the owner — always
+Any authored *look or feel* — lighting, set-dress, art, audio, any craft/creative deliverable — is reviewed by its **senior domain authority** (`art-director` for the look, `creative-review` for on-pitch) **before it reaches the owner.** The owner is never the first competent reviewer of craft work: **build → senior craft review → owner.** This review can be fast, but it always happens.
+
+This holds for crude and throwaway-ish work too. "Crude" excuses **low fidelity** — a rough shape, a placeholder texture, one register instead of two. It never excuses **unmotivated or nonsensical craft** — e.g. bare point lights floating in the middle of a street with no physical source — and it never excuses skipping the senior eye. Routing raw first-draft craft straight to the owner, in the name of speed or matching ceremony to stakes, is exactly the gate failure the gated studio exists to prevent (doctrine 1): the owner becomes the first competent set of eyes on unfinished work.
+
+### Owner-in-the-loop, fast
+Prefer getting a **viewable artifact in front of the owner to walk** over long async QA cycles the owner can't see. Build it via batched game-thread scripting — one `py` pass, reusable / data-driven assembly — not hundreds of serial per-actor MCP calls, so iteration is minutes, not long runs.
+
+But *fast* still means **through the senior craft eye first** (above): the artifact the owner walks has already passed `art-director` / `creative-review`. Speed comes from cheap iteration, never from making the owner the first reviewer.
+
 ## Who decides what
 - **Agent-decidable** (reversible + plan-aligned + no spend + no public surface): `technical-director` decides via the `decide` method and logs it.
 - **Owner-reserved** (money, public-facing, the vision, irreversible): framed by the Director, **decided by the owner**. Agents recommend; they never self-approve these.
