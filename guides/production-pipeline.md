@@ -47,7 +47,7 @@ Everything below is driven by the **`producer`**, who owns *when and in what ord
 | 5 | **Test** | `qa-visual`, `qa-network`, `security-reviewer`, `engine-verifier` — **fresh, never the builder** | multi-view battery · server+2-clients+negative test · exploit enumeration · source check | Defects against the spec, or a clean pass |
 | 6 | **Quality gate** | the verify agents | pass/fail against the committed test-plan | *Is it broken / correct / secure?* — a defect is "doesn't match the spec," not an opinion |
 | 7 | **Review** | `art-director` (look) · `creative-review` (on-pitch) — **always a fresh subagent** | senior craft / creative judgement | *Is it good / is it ours?* — standing to say off-pitch, stop |
-| 8 | **Close** | `producer` | drain rule (doctrine 6); `knowledge-keeper` for the vault; doctrine 13 for lessons | Every task done/moved/dropped-with-reason · vault describes **what was built** · phase file signed off · lessons written into the owning guide |
+| 8 | **Close** | `producer` | drain rule (doctrine 6); `knowledge-keeper` for the vault; doctrine 13 for lessons | Every task done/moved/dropped-with-reason · vault describes **what was built** · phase file signed off · lessons written into the owning guide · remaining phases re-scoped |
 
 ## The inner loop is the whole game
 
@@ -70,6 +70,8 @@ The **editor is single-threaded** — MCP calls run on the game thread and deadl
 ## Close — the drain rule (doctrine 6)
 
 A phase file is signed off **only when every unchecked task has a new home**: done · moved to `roadmap.md` · moved to a `TODO` · consciously dropped *with a reason*. Then: confirm the vault describes what was **built**, not what was planned; update `roadmap.md`; capture every lesson into its owning guide **in the same session** (doctrine 13); mark the phase file complete. "We'll remember" is not one of the options.
+
+**Then, before the next phase opens: the re-scope review.** Every phase-close triggers a mandatory review of all remaining phases in the roadmap (`plan/game-roadmap.md`) — for each, decide **carry forward / rescope / drop**, and rewrite it as current (doctrine 12). A closing phase almost always reshapes a downstream assumption; a downstream forecast is never treated as locked truth, so it is re-scoped against what this phase actually taught *before* any of it is built. This is the discipline that makes decomposing the whole arc up front a living forecast rather than a waterfall (`skills/bootstrap-from-spec`).
 
 ## Skills this SOP references that are not yet authored
 
