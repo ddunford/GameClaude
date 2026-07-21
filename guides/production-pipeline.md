@@ -87,9 +87,23 @@ The **editor is single-threaded** — MCP calls run on the game thread and deadl
 - **Agent-decidable** (reversible + plan-aligned + no spend + no public surface): `technical-director` decides via the `decide` method and logs it to the decisions log.
 - **Owner-reserved** (money, public-facing surface, the vision, irreversible): framed by the Director, **decided by the owner**. The loop stops and waits.
 
+## What tracks what — the trackers, no overlap
+
+Outstanding work and truth are tracked in distinct places, each owning one scope; if they overlap they drift, so one fact has one home:
+
+| Tracker | Owns | Lifecycle |
+|---|---|---|
+| **`TODO.md`** (repo root) | **The live driver** — the flat, ordered, always-current queue of the active phase's work: what's next / in-progress / blocked / done, plus the single "you are here" line. `team-execute` picks the next open item and keeps it current as it works. | Live; drained at phase close |
+| **`plan/<phase>.md`** | **Task detail** — each queue item's owner, acceptance criteria, test-plan, and verify/judge owners. The queue links to it; it does not restate the queue's status. | Signed off at close, kept as history. Committed |
+| **`plan/game-roadmap.md`** | Milestone/phase status and definitions of done | Durable |
+| **`plan/risk-register.md`** | Risks — owner, mitigation, review-gate | Durable; walked every close |
+| **`SPEC.md` + `docs/design/`** | The spec — what the game is and the per-phase DoD | Durable |
+
+`TODO.md` is the *queue + status*; the phase file is the *detail*. `team-execute` keeps the two in sync — each TODO item references its phase-file task, and detail is never copied down into the queue. Small debts with no phase task also live in `TODO.md` (its "no other home" section), and survive there across a gate until they land somewhere.
+
 ## Close — the drain rule (doctrine 6)
 
-A phase file is signed off **only when every unchecked task has a new home**: done · moved to `roadmap.md` · moved to a `TODO` · consciously dropped *with a reason*. Then: confirm the vault describes what was **built**, not what was planned; update `roadmap.md`; capture every lesson into its owning guide **in the same session** (doctrine 13). "We'll remember" is not one of the options.
+A phase file is signed off **only when every open item in `TODO.md` has a new home**: done · moved to `game-roadmap.md` · consciously dropped *with a reason* (a debt with no phase attachment survives in the `TODO.md` "no other home" section). Then: confirm the vault describes what was **built**, not what was planned; update `game-roadmap.md`; capture every lesson into its owning guide **in the same session** (doctrine 13). "We'll remember" is not one of the options.
 
 **Then two required close sub-steps run before sign-off:**
 - **Process retro** (`process-retro`, owner `producer`) — interrogate how the studio *worked* this phase: what in the SOP, a skill, or an agent's method failed, was missing, or slowed the phase down, and feed the fix back into the process the same session. Produces a committed `plan/<phase>-retro.md`. This is distinct from doctrine-13 craft-lesson capture (which fixes the *content* of a craft/engine lesson into its guide); the retro fixes the *process*.

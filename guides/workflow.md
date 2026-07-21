@@ -14,7 +14,7 @@
    - **acceptance criteria** (what "done" means, concretely),
    - a **verification link** — which fresh agent checks it, or `[no-test: <reason>]` (doctrine 8).
    - the applicable **cross-cutting design-in criteria** — externalize-strings on any player-facing text, accessibility-basics on any player-facing surface, and a compliance-framing flag on anything touching minors/data/payments/the public surface. These are cheap to design in now and ruinous to retrofit, so they ride on the task's acceptance in whatever phase it lands, ahead of their full P3 passes (`guides/production-pipeline.md` Part 1, "Cross-cutting acceptance criteria").
-   The Producer keeps ONE "you are here" line true at all times.
+   The phase file is the task **detail**; the live **queue** those tasks are worked from is `TODO.md` (repo root) — the flat, ordered, always-current checklist `team-execute` reads and keeps updated, carrying the single "you are here" line the Producer keeps true at all times (`guides/production-pipeline.md`, "What tracks what").
 
 3. **Design before build (Directors gate).** For anything spatial, `level-designer` writes the committed spec (plan / metrics / elevations / hero views) *before* a primitive is placed. For a system, `game-designer` writes the spec. The relevant Director approves the spec. **No spec, no build** (doctrine 2).
 
@@ -37,7 +37,7 @@
 
 8. **The gate.** The Producer assembles the verified + judged result. A phase gate (greenlight / slice / alpha / beta / gold) is crossed by the **Director/owner**, never on the builder's say-so. Owner-reserved calls (money, public surface, vision, irreversible) stop and wait for the owner.
 
-9. **Drain at close.** No task is left homeless: done / moved / consciously dropped-with-reason. Then the milestone is signed off, its record kept as history.
+9. **Drain at close.** No open `TODO.md` item is left homeless: done / moved to `game-roadmap.md` / consciously dropped-with-reason (a debt with no phase attachment survives in the `TODO.md` "no other home" section). Then the phase file is signed off, its record kept as history.
 
 ## Level work — structural verification and visual QA are different gates
 Two different questions, run as two gates in this order:
