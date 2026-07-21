@@ -29,7 +29,7 @@ What we can do, which surface does it, and where the gap is. This is the **targe
 |---|---|---|
 | **Place / move / duplicate / query actors** | Unreal MCP — `SceneTools`, `ObjectTools` | ✅ |
 | **Read/write actor & asset properties** | Unreal MCP — `ObjectTools` (public props); Remote Control `py` (anything editable) | ✅ |
-| **Read *protected/private* C++ properties** (WP grid, engine internals) | our toolkit — C++ tool (`FindFProperty` bypasses access specifiers) | ⧗ build |
+| **Read *reflection-flag-gated* `UPROPERTY`s** (WP grid, engine internals) | our toolkit — C++ tool (`FindFProperty` + `ContainerPtrToValuePtr` ignores the `CPF_Edit \| CPF_BlueprintVisible` flag gate every Python route enforces — see `guides/unreal-engine.md` §10; it is NOT the C++ `protected`/`private` keyword) | ⧗ build |
 | **Author Blueprints / Materials / DataTables / Niagara / Sequencer** | Unreal MCP — the respective toolsets | ✅ |
 | **Arbitrary editor Python (game thread)** | Remote Control → `py "<path>"`; log results, read via logs | ✅ |
 | **Console commands / cvars** | Remote Control → `ExecuteConsoleCommand` | ✅ |

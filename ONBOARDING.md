@@ -7,7 +7,7 @@ A game-development **studio, run as a team of agents**. You are the **Director**
 
 ## The three repos
 1. **GameClaude** (this) — the studio. Installs as your game project's `.claude/`.
-2. **UnrealEngineMCP** — the editor toolkit. Into your project's `Plugins/`.
+2. **ue-mcp-toolkit** — the editor toolkit. Into your project's `Plugins/`.
 3. **Your game** — the UE5 project that uses both.
 
 ## The lifecycle (and where you're pulled in)

@@ -41,7 +41,7 @@ Every role links its craft depth to a `guides/` guide and runs its process throu
 |---|---|
 | `network-engineer` | Replication, authority, relevancy, persistence |
 | `gameplay-engineer` | Abilities, movement, feel (GAS, BP↔C++) |
-| `tools-programmer` | The `UnrealEngineMCP` toolkit — full editor access |
+| `tools-programmer` | The `ue-mcp-toolkit` — full editor access |
 | `backend-engineer` | Accounts, save schema, atomic transactions, matchmaking, server fleet · *long-lead, P1* |
 | `performance-engineer` | Frame / memory / bandwidth budgets — sets P1, gates P3–P4 |
 | `build-engineer` | CI, cook, packaging, dedicated-server build, release/versioning · *P2* |
