@@ -10,7 +10,7 @@ We drive the editor through three surfaces. Naming is deliberate; use the right 
 |---|---|---|---|
 | **Unreal's MCP** | Epic's in-engine `ModelContextProtocol` server + `AllToolsets` (SceneTools, ObjectTools, EditorAppToolset, DataTableTools, Blueprint tools, …) | the MCP client tools (`list_toolsets` / `describe_toolset` / `call_tool`) | Standard editor operations Epic already covers well — placing/querying actors, properties, assets, Blueprints, config. |
 | **Remote Control** | Epic's `RemoteControl` plugin, HTTP on `localhost:30010` — runs **arbitrary game-thread Python** and **console commands** | `curl` → `KismetSystemLibrary.ExecuteConsoleCommand` → `py "<script>"` | The long tail: anything no toolset exposes, batch scripts, console commands. The full editor Python API on the game thread. |
-| **Our toolkit** (`ue-mcp-toolkit`) | *Our* plugin, registering custom toolsets into Unreal's MCP server. Today: `GeometryAuditTools`, `ContentAuditTools`, `CaptureTools`, `BrowserToolset`. | same MCP client tools | The **gaps** and the **reliable, structured, high-level** operations we own. |
+| **Our toolkit** (`ue-mcp-toolkit`) | *Our* plugin, registering custom toolsets into Unreal's MCP server. Six toolsets, all verified callable and returning structured JSON `[MEASURED: 2026-07-21]`: `GeometryAuditTools`, `ContentAuditTools`, `CaptureTools`, `NetworkHarnessTools`, `BlockoutTools` (Python, hot-registered) + `BrowserToolset` (C++). | same MCP client tools | The **gaps** and the **reliable, structured, high-level** operations we own. |
 
 **THE ROUTING RULE:**
 > **Unreal's MCP for what it does well · Remote Control for the long tail · our toolkit for the gaps and anything we need reliable and structured.**
@@ -35,6 +35,7 @@ What we can do, which surface does it, and where the gap is. This is the **targe
 | **Console commands / cvars** | Remote Control → `ExecuteConsoleCommand` | ✅ |
 | **Geometry truth** — true rendered base, seating, interpenetration (bounds *lie* on PLAs/ISMs `[verify]`) | our toolkit — `GeometryAuditTools.measure_true_base` / `sweep_interpenetration` | ✅ |
 | **Content / asset audit** — mesh-path provenance, dependency closure, dangling refs | our toolkit — `ContentAuditTools` | ✅ |
+| **Per-LOD tri/vert counts, LOD count, Nanite state, LOD thresholds, mesh bounds** | Unreal MCP — `StaticMeshTools` (`get_triangle_count`/`get_vertex_count` per `lod_index`, `get_lod_count`, `is_nanite_enabled`, `get_lod_thresholds`, `get_bounds`) | ✅ (Epic-covered — **not** a toolkit gap; only UV-channel count + per-LOD resource-memory bytes remain unreflected) |
 | **Screenshots / views** (top-down, elevation, eye-level, silhouette) | our toolkit — `CaptureTools.capture_view` (single view) / `capture_battery` (canonical set in one call). Wraps a transient `ASceneCapture2D` → render target → PNG, on the game thread. **True orthographic** projection for plan/elevation; auto-frames a `target_filter` (or the whole level); manual exposure; cold-start priming; temporary legibility lighting on unlit levels — legibility only, **not** a QA-of-record basis: a visual verdict rests on lighting *saved* in the level (`guides/workflow.md`), because this transient rig makes an unlit level shootable while it still renders black in a real viewport. Returns the PNG path + the fully-resolved camera pose so a later pass re-shoots identically. All the requirements below are baked in and `[MEASURED: 2026-07-21]`: cold-start prime (first render is black — `prime_frames` capture passes); sun+key/fill+skylight added if the level has none (empty levels render black; a single sun crushes the camera-facing faces of an elevation to black); **orthographic for plan & elevation** (perspective foreshortening reads as false tilt/rotation to a reviewer — proven: an ortho image is pixel-identical across camera distances, diff 0.0, perspective is not); **manual exposure**; canonical battery (`top`+4 elevations ortho + `iso` perspective) in one call | ✅ |
 | **Design & build levels** | plan/metrics/elevation spec (`agents/level-designer`) → build via Unreal MCP + Remote Control, seated by geometry-truth tools | ✅ (method) |
 | **Build a whitebox blockout FAST** — author massing as data, build/rebuild in one pass | our toolkit — `BlockoutTools.build_blockout` reads a JSON massing definition (`Tools/blockout/*.blockout.json`) and spawns every solid mass in one batched game-thread call. Idempotent (tag `blockout:<id>`, clear-and-rebuild → no duplicates), metric→cm, exact seating by construction, per-mass outliner folder/collision/tag. A layout change is "edit the data, re-run". `[MEASURED: 2026-07-21 — 33-mass Neon Hub massing built in ~0.25 s; edit-and-rebuild clears 33 / spawns 33, no dupes]` | ✅ |
@@ -50,6 +51,47 @@ What we can do, which surface does it, and where the gap is. This is the **targe
 | **Cook / package / build lighting / build HLOD** | limited on a Launcher build; needs a source-built engine | ⛔ gap (engine) |
 
 **When you request rather than build:** if an asset (mesh, sound, music) is needed and not acquirable free/automatically, or a capability needs the source-built engine, **surface the request to the owner** — never silently work around it or fake it (doctrine 6).
+
+---
+
+## The surveyed surface — every registered toolset `[MEASURED: 2026-07-21]`
+
+Not "treat missing as unknown" any more — this is the full `list_toolsets` enumeration, surveyed live. **59 toolsets register:** 53 from Epic's `AllToolsets`, plus our 6. Call each by its **fully-qualified** registered name (the prefix shown), never the short form.
+
+**Epic — authoring:** `editor_toolset.*` — `SceneTools`, `ActorTools`, `ObjectTools`, `PrimitiveTools`, `AssetTools`, `BlueprintTools`, `StaticMeshTools`, `SkeletalMeshTools`, `MaterialTools`, `MaterialInstanceTools`, `TextureTools`, `DataTableTools`, `CurveTableTools`, `DataAssetTools`, `StringTableTools`, `ProgrammaticToolset` · `UMGToolSet` · `PCGToolset.{PCGToolset,PCGSpatialToolset}` · `PhysicsToolsets.PhysicsAssetToolset` · `NiagaraToolsets.{_Info,_Component,_Blueprint,_System,_Assets}` (5).
+
+**Epic — animation/cinematics:** `animation_toolset.*` — `ControlRigTools`, `SequencerTools`, `SequencerKeyframingTools`, `SequencerControlRigTools`, `SequencerOutlinerTools`, `SequencerConditionTools`, `SequencerCustomBindingTools`, `SequencerImportExportTools` (8).
+
+**Epic — gameplay/AI/systems:** `GASToolsets.{GameplayCueToolset,AttributeSetToolset,AbilitySystemInspectorToolset}` (3) · `GameplayTagsToolset` · `aimodule_toolset.toolsets.behavior_tree.BehaviorTreeTools` · `state_tree_toolset.toolsets.state_tree.StateTreeTools` · `WorldConditionsToolset.WorldConditionTools` · `conversation_toolset.toolsets.conversation.ConversationTools` · `DataRegistryToolset.DataRegistryTools`.
+
+**Epic — editor/infra:** `EditorToolset.{EditorAppToolset,LogsToolset}` · `ConfigSettingsToolset` · `LiveCodingToolset` · `PluginToolset` · `GameFeaturesToolset` · `AutomationTestToolset` · `SlateInspectorToolset` · `SemanticSearchToolset` · `ToolsetRegistry.AgentSkillToolset` · `DataflowAgent.DataflowAgentToolset`.
+
+**Ours (`ue-mcp-toolkit`) — all verified callable this survey:** `ue_mcp_toolkit.toolsets.{geometry.GeometryAuditTools, content.ContentAuditTools, capture.CaptureTools, network_harness.NetworkHarnessTools, blockout.BlockoutTools}` (Python) · `UeMcpToolkitEditor.BrowserToolset` (C++). Read-only smoke calls all returned structured JSON (GeometryAudit `measure_true_base`, ContentAudit `audit_mesh_paths`, Capture `capture_view` iso PNG, NetworkHarness `get_session_state` = no-session, Blockout `clear_blockout` = 0 cleared, Browser `ListBrowsers` = `[]`). The Remote Control long-tail route (`:30010` → `py` → `unreal.log` → `LogsToolset.GetLogEntries`) round-trips on the game thread `[MEASURED: 2026-07-21]`.
+
+### Every discipline knows what it drives
+
+| Discipline | Primary toolsets |
+|---|---|
+| **animator** | `ControlRigTools` · `SequencerControlRigTools` · `SequencerImportExportTools` (FBX/AnimSequence in-out) · `SkeletalMeshTools` (bones/sockets) · Anim BP graphs via `BlueprintTools` |
+| **vfx-artist** | the 5 `NiagaraToolsets` (`_System` is primary; `_Assets` to discover modules, `_Component` for runtime overrides, `_Blueprint` to wrap as actors) · `MaterialTools` (FX materials) |
+| **cinematics** | the 8 `animation_toolset` Sequencer toolsets (`SequencerTools` core → keyframing/controlrig/outliner/conditions/custom_bindings/import_export) · `EditorAppToolset` (viewport camera) · `CaptureTools` (stills) |
+| **ui-ux-designer** | `UMGToolSet` **with the mandatory `ObjectTools.list_properties`→`get`→`set` workflow** (guessed property names fail silently) · `StringTableTools` · `DataTableTools` |
+| **gameplay-engineer** | `BlueprintTools` · GAS ×3 (`GameplayCueToolset`/`AttributeSetToolset`/`AbilitySystemInspectorToolset`) · `GameplayTagsToolset` · `WorldConditionTools` · `LiveCodingToolset` (function-body recompile) · `ObjectTools` |
+| **network-engineer** | our `NetworkHarnessTools` (PIE server+clients, replication assert) · `LiveCodingToolset` · `ObjectTools`/`BlueprintTools` · RC console for `net.Iris.*` cvars. Static replication-coverage audit is roadmap **R2** (gap) |
+| **level-designer** | `SceneTools` · `ActorTools` · `PrimitiveTools` · `ObjectTools` · our `BlockoutTools` (data-driven whitebox) · our `GeometryAuditTools` (seating truth) · our `CaptureTools` (plan/elevation battery). WP grid knobs are roadmap **A2** (gap) |
+| **environment-artist** | `SceneTools` · `StaticMeshTools` · `MaterialInstanceTools` · `PCGToolset`/`PCGSpatialToolset` · `TextureTools` · our `GeometryAuditTools` + `ContentAuditTools` · Fab via our `BrowserToolset` |
+| **lighting-artist** | `SceneTools` (place lights) · `ObjectTools` (light/post-process/exposure props) · `EditorAppToolset` (lighting cvars) · `ConfigSettingsToolset` · our `CaptureTools` (manual-exposure capture; luminance analysis is roadmap **R1**) |
+| **character-artist** | `SkeletalMeshTools` · `StaticMeshTools` · `MaterialInstanceTools` · `TextureTools` · `PhysicsAssetToolset` · `AssetTools`/`StaticMeshTools.import_file` |
+| **ai-engineer** | `BehaviorTreeTools` · `StateTreeTools` · `WorldConditionTools` · `SceneTools` (nav volumes). Navmesh **build** is roadmap **A5** (gap — no build toolset registers) |
+| **tech-artist** | `StaticMeshTools` (LOD/collision/Nanite + per-LOD `get_triangle_count`/`get_vertex_count`) · `MaterialTools`/`MaterialInstanceTools` · `PCGToolset` ×2 · `TextureTools` · `PhysicsAssetToolset` · `AssetTools` · our `GeometryAuditTools` + `ContentAuditTools` |
+| **qa-visual** | our `CaptureTools` (battery) + `GeometryAuditTools` (floating/interpenetration) · `EditorAppToolset`/`SceneTools` (camera) |
+| **qa-network** | our `NetworkHarnessTools` (all parties) · `EditorAppToolset` (PIE control) |
+| **qa-functional** | `AutomationTestToolset` (`DiscoverTests`→`RunTestsByFilter`→`GetTestResults`, structured pass/fail) · `BlueprintTools` · `ObjectTools` |
+| **performance-engineer** | `StaticMeshTools` counts · our `ContentAuditTools` (closure size) · RC `stat` cvars. Structured frame-timing capture is roadmap **A3** (gap — no perf toolset registers) |
+| **build-engineer** | `LiveCodingToolset` · `PluginToolset` · `GameFeaturesToolset` · `ConfigSettingsToolset` · `AutomationTestToolset` (validation) |
+| **game-designer / economy** | `DataTableTools` · `CurveTableTools` · `DataAssetTools` · `DataRegistryTools` |
+| **narrative-designer** | `conversation_toolset` `ConversationTools` (dialogue graphs) · `StringTableTools` |
+| **tools-programmer** (us) | `AgentSkillToolset` · `PluginToolset` · `LiveCodingToolset` · `ProgrammaticToolset` · `SlateInspectorToolset` · all of ours |
 
 ---
 
