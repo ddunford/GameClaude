@@ -59,6 +59,7 @@ Citations tagged `[SRC:…]` were verified during trial-1; they point at real so
 - **Use MANUAL exposure, locked per register** — auto-exposure re-balances to whatever's in frame (produced an "olive road cast" from a bright-sky-tuned bias). But **locked ≠ crushed**: exposure locked dark to fake night rendered a fully-planted garden (18 trees + 200+ plants) near-black. Stay visible. The "bias" number is empirical, not EV semantics (11 blew white, 4 read night here). `[MEASURED: 2026-07-19 / 2026-07-20]`
 - **Packed Level Actors silently drop lights, Niagara, decals and audio** — door light-spill inside a packed building must be emissive material, not a light (or a separate external WP light actor). `[SRC: architecture.md §7]`
 - Baseline is **Lumen + Nanite**. Thin-wall light leak is a Lumen mesh-distance-field resolution problem (thin walls vanish from the SDF). `[verify]`
+- **A freshly created empty level (`new_level`) has no sky / sun / skylight, so a SceneCapture FinalColor render comes back fully BLACK.** Add a `DirectionalLight` + `SkyAtmosphere` + `SkyLight` before capturing anything. `[MEASURED: 2026-07-21]` (smoke test)
 
 ## 6. PIE & dedicated server
 - **Net mode is NOT a `StartPIE` parameter** — the engine reads it from the `ULevelEditorPlaySettings` CDO (`/Script/UnrealEd.Default__LevelEditorPlaySettings`): set `playNetMode` / `playNumberOfClients` / `runUnderOneProcess`, then StartPIE. `[SRC: PlayLevel.cpp:991]`

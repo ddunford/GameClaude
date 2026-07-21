@@ -37,3 +37,8 @@ Re-shot **identically** every pass so changes are comparable, not cherry-picked:
 4. **Silhouette** — landmarks read as distinct black shapes against sky; hierarchy holds.
 
 A single flattering angle is not QA. The builder never runs their own gate.
+
+**Capture discipline (or the battery lies) — `[MEASURED: 2026-07-21]`, smoke test:**
+- **Plan and elevation MUST be orthographic captures**, not a perspective camera pointed down/sideways. A perspective camera foreshortens, and foreshortening reads as *tilt and rotation that isn't there* — a fresh reviewer will (correctly, given the image) report walls "leaning" and a plinth "rotated" when the geometry is dead-on axis-aligned. False defects waste a verify cycle. Use an orthographic projection for views 1 & 2.
+- **Set manual exposure + a fill/skylight before capturing.** Blown-white or crushed-black frames make base/corner **seating unverifiable** — the reviewer cannot confirm "nothing floating, no base gaps", which is half the point of the battery. Underexposed silhouettes and bloomed overviews both fail this.
+- Corollary: pair the *human* elevation read with the *geometry-truth tool* (`measure_true_base`) — the tool gives the exact seated Z the eye can't, the eye gives the composition the tool can't. Neither alone is the gate.
