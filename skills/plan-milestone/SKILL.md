@@ -26,4 +26,6 @@ Doctrine this enforces: **spec-first** (2), **traceability** (8), **spike-before
 
 ## Task shape (every row)
 
-`[ ] <task>` — **owner:** `<agent>` · **acceptance:** `<concrete done>` · **verify:** `<agent + check>` or `[no-test: <reason>]`
+`[ ] <task>` — **owner:** `<agent>` · **tool/skill:** `<skill + the specific tool/route the owner drives>` · **acceptance:** `<concrete done>` · **verify:** `<agent + check>` or `[no-test: <reason>]`
+
+The **tool/skill** field names *how the work is actually driven* — the owning skill (if one applies) plus the specific editor tool/route: Unreal's MCP for what Epic covers well · Remote Control `py`/console for the long tail · our `ue-mcp-toolkit` for the gaps and structured ops (see `guides/tooling-ue.md`, the single source of truth for the routing rule and for what is still a gap). It is a hint that makes execution deterministic, not a hard constraint — the owner still routes per the guide, and a genuine gap (no tool yet) is flagged as a `spike`/toolkit task rather than guessed past.
