@@ -1,6 +1,6 @@
 # Guide — How the studio works (the choreography)
 
-> The concrete task-flow. `CLAUDE.md` states the doctrine and the phase gates; this spells out *exactly* how a piece of work moves through the team, so a cold session (or the owner) can see the machine turn.
+> The concrete task-flow. `CLAUDE.md` states the doctrine and the phase gates; this spells out *exactly* how a piece of work moves through the team, so a cold session (or the owner) can see the machine turn. For the level above this — the milestone-execution SOP, the phase×discipline deliverable map, and the discipline activation schedule — see `guides/production-pipeline.md`; this guide is its per-task detail.
 
 ## The one-line shape
 **Owner intent → Producer plans → the right agent builds → a *fresh* agent verifies → a *fresh* agent judges → the gate → the owner.** Build and verify are never the same agent (doctrine 1).

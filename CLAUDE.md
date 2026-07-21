@@ -56,6 +56,8 @@ Lemarchand's phases, each bounded by a gate crossed by a **different owner than 
 
 Nothing downstream starts until the upstream gate passes. The **Producer** (`agents/producer`) owns *when and in what order*; the **Directors** own *what and whether*; **Verify & Judge** gate work *out*.
 
+The full milestone-execution SOP (decompose → build → verify → review → close), the phase×discipline deliverable map, and the discipline activation schedule live in **`guides/production-pipeline.md`**.
+
 **Decision rights.** *Owner-reserved:* money, public-facing surface, the creative vision, anything irreversible. *Agent-decidable:* reversible, plan-aligned, no spend, no public surface — decide it and log it (`agents/technical-director` via the `decide` method). When unsure, escalate with a recommendation.
 
 ---
