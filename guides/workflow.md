@@ -13,6 +13,7 @@
    - an **owner** (an agent from `ROSTER.md`),
    - **acceptance criteria** (what "done" means, concretely),
    - a **verification link** — which fresh agent checks it, or `[no-test: <reason>]` (doctrine 8).
+   - the applicable **cross-cutting design-in criteria** — externalize-strings on any player-facing text, accessibility-basics on any player-facing surface, and a compliance-framing flag on anything touching minors/data/payments/the public surface. These are cheap to design in now and ruinous to retrofit, so they ride on the task's acceptance in whatever phase it lands, ahead of their full P3 passes (`guides/production-pipeline.md` Part 1, "Cross-cutting acceptance criteria").
    The Producer keeps ONE "you are here" line true at all times.
 
 3. **Design before build (Directors gate).** For anything spatial, `level-designer` writes the committed spec (plan / metrics / elevations / hero views) *before* a primitive is placed. For a system, `game-designer` writes the spec. The relevant Director approves the spec. **No spec, no build** (doctrine 2).
@@ -24,11 +25,15 @@
 6. **Verify — fresh, and parallel where read-only.** The builder hands off; it does **not** sign its own work:
    - `qa-visual` — the multi-view battery (top-down / elevation / eye-level / silhouette) for anything rendered.
    - `qa-network` — server + 2 clients + the negative test for anything networked.
+   - `qa-functional` — the spec-match correctness battery (happy path + edges/boundaries/invalid input/state transitions/system interactions) for any mechanic, system, economy rule, or save/load whose correctness isn't a rendered frame or a replicated value.
    - `security-reviewer` — every client-reachable endpoint; names the exploit each check prevents.
+   - `perf-gate` — for hot-path or perf-sensitive work, `stat unit` before/after against the committed budget (the P3–P4 hard gate is the milestone-level version, `guides/production-pipeline.md`).
    - `engine-verifier` — any engine-behaviour claim the work rests on.
    These are fresh subagents; read-only ones can run in parallel.
 
-7. **Judge — is it good?** `creative-review` (always a fresh subagent) spec-matches, then scores the ranked beats. It has standing to say *off-pitch, stop*.
+7. **Judge — is it good / is it sound?** Two fresh-eyes judges, by surface:
+   - `creative-review` (always a fresh subagent) — for authored look/feel: spec-matches, then scores the ranked beats. Standing to say *off-pitch, stop*.
+   - `code-review` — for any non-trivial C++/systems change, **before merge**: architecture, maintainability, convention, and the doctrine rules. The engineering equivalent of the creative senior eye — a fresh reviewer, **never the author** (doctrine 1). `qa-functional`/`qa-network`/`security-reviewer` ask *does it work / is it authoritative / can it be exploited*; `code-review` asks *is it sound*.
 
 8. **The gate.** The Producer assembles the verified + judged result. A phase gate (greenlight / slice / alpha / beta / gold) is crossed by the **Director/owner**, never on the builder's say-so. Owner-reserved calls (money, public surface, vision, irreversible) stop and wait for the owner.
 

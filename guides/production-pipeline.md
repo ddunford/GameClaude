@@ -18,18 +18,25 @@ Everything below is driven by the **`producer`**, who owns *when and in what ord
   1 FRAME ........... producer + Directors ....... is this the right thing, and what is "done"?
         │
   2 DECOMPOSE ....... producer ................... phases → tasks, each with owner + acceptance + test-plan
-        │  (spec-first · spike unknowns in isolation before this closes)
+        │  (spec-first: level/game-design spec · engineering-heavy → tech-design TDD
+        │   · spike unknowns in isolation — via `spike` — before this closes)
+        │
+  2a ASSET-BREAKDOWN  tech-artist (art-director) . phase bill-of-materials: every asset, HAVE/ACQUIRE/GENERATE
+        │  (feeds fab-acquire → ingest-asset → build)
         ▼
   ┌── per task ─────────────────────────────────────────────────────────┐
   │ 3 TEST-PLAN ..... the verifying QA agent ..... declared BEFORE build  │
+  │      └ engineering-heavy? tech-design TDD committed + fresh-reviewed   │
   │ 4 BUILD ......... the discipline agent ....... serial on the editor   │
+  │      └ instrument as you build (analytics-engineer) if it has a signal │
   │ 5 TEST .......... fresh QA / verify agents ... is it broken/correct?  │
   │ 6 QUALITY GATE .. verify agents .............. pass/fail vs test-plan  │
-  │ 7 REVIEW ........ fresh senior craft/creative  is it good?            │
+  │ 7 REVIEW ........ fresh senior eyes ........... is it good / is it sound?
+  │      └ art → creative-review · code → code-review (fresh, never author) │
   └──────────────────────────────────────────────────────────────────────┘
         │  (loop per task; read-only steps parallel, editor-mutating steps serial)
         ▼
-  8 CLOSE ........... producer .................. drain · vault · gate · capture lessons
+  8 CLOSE ........... producer .................. drain · retro · risk-walk · vault · gate · lessons
         │
      PHASE GATE (Director / owner) → next phase
 ```
@@ -38,16 +45,19 @@ Everything below is driven by the **`producer`**, who owns *when and in what ord
 
 | # | Step | Owner (agent) | Method / skill | Produces |
 |---|---|---|---|---|
-| 1 | **Frame** | `producer` + relevant Director | `plan-milestone` ⚠️ *to author* | Milestone restated against `roadmap.md`'s definition of done; owner-reserved calls flagged |
-| 2 | **Decompose** | `producer` | `plan-milestone` ⚠️ | `plan/<milestone>.md` — phases and tasks, each with **owner + acceptance criteria + verification link** (doctrine 8) |
-| — | *Spec-first gate* | `level-designer` / `game-designer`; Director approves | `guides/level-design.md`, `guides/game-design.md` | Committed spec (plan/metrics/canonical views) *before* any build (doctrine 2) |
-| — | *Spike unknowns* | the discipline agent; `engine-verifier` for engine claims | `verify-engine-claim` ⚠️; isolated throwaway map (doctrine 3) | Proven approach, backported to the vault, before the main build is touched |
-| 3 | **Test-plan** | the verifying agent (`qa-visual` / `qa-network` / `security-reviewer`) | its own battery, declared up front | Each task's test named *before* build, or `[no-test: <reason>]` — no third option (doctrine 8) |
+| 1 | **Frame** | `producer` + relevant Director | `plan-milestone` | Milestone restated against `roadmap.md`'s definition of done; owner-reserved calls flagged |
+| 2 | **Decompose** | `producer` | `plan-milestone` | `plan/<milestone>.md` — phases and tasks, each with **owner + acceptance criteria + verification link** (doctrine 8) |
+| 2a | **Asset breakdown** | `tech-artist` (`art-director` consulted) | `asset-breakdown` | The phase's asset bill-of-materials — every asset by class, each **HAVE / ACQUIRE / GENERATE**, each ACQUIRE with a Fab search line; feeds `fab-acquire` → `ingest-asset` → build |
+| — | *Spec-first gate (spatial / systems)* | `level-designer` / `game-designer`; Director approves | `guides/level-design.md`, `guides/game-design.md` | Committed spec (plan/metrics/canonical views) *before* any build (doctrine 2) |
+| — | *Tech-design gate (engineering-heavy)* | `technical-director` (+ `backend-engineer` / `network-engineer` on their systems); fresh reviewer approves | `tech-design` | Committed TDD (problem/approach/data model/interfaces/failure modes) *before* build — the engineering equivalent of the spec-first gate (doctrine 2) |
+| — | *Spike unknowns* | the discipline agent, reviewed by `creative-director`; `engine-verifier` for engine claims | `spike` (isolated throwaway map, doctrine 3); `verify-engine-claim` for engine behaviour | Proven approach, backported to the vault, before the main build is touched |
+| 3 | **Test-plan** | the verifying agent (`qa-visual` / `qa-network` / `qa-functional` / `security-reviewer`) | its own battery, declared up front | Each task's test named *before* build, or `[no-test: <reason>]` — no third option (doctrine 8) |
 | 4 | **Build** | the discipline agent (see Part 3.1) | the craft guide + `guides/workflow.md`; tools per `guides/tooling-ue.md` | The work, saved; **serial on the editor** — one editor-mutating agent at a time |
-| 5 | **Test** | `qa-visual`, `qa-network`, `security-reviewer`, `engine-verifier` — **fresh, never the builder** | multi-view battery · server+2-clients+negative test · exploit enumeration · source check | Defects against the spec, or a clean pass |
+| 4a | **Instrument** *(if it has a behavioural signal)* | `analytics-engineer` | instrument-as-you-build, not a retrofit | The events/metrics the feature's signal needs, wired in the same pass as the build — never bolted on after |
+| 5 | **Test** | `qa-visual`, `qa-network`, `qa-functional`, `security-reviewer`, `engine-verifier` — **fresh, never the builder** | multi-view battery · server+2-clients+negative test · spec-match functional battery · exploit enumeration · source check | Defects against the spec, or a clean pass |
 | 6 | **Quality gate** | the verify agents | pass/fail against the committed test-plan | *Is it broken / correct / secure?* — a defect is "doesn't match the spec," not an opinion |
-| 7 | **Review** | `art-director` (look) · `creative-review` (on-pitch) — **always a fresh subagent** | senior craft / creative judgement | *Is it good / is it ours?* — standing to say off-pitch, stop |
-| 8 | **Close** | `producer` | drain rule (doctrine 6); `knowledge-keeper` for the vault; doctrine 13 for lessons | Every task done/moved/dropped-with-reason · vault describes **what was built** · phase file signed off · lessons written into the owning guide · remaining phases re-scoped |
+| 7 | **Review** | `art-director` / `creative-review` (art, on-pitch) · `code-review` (engineering soundness) — **always a fresh subagent, never the author** | senior craft/creative judgement (`creative-review`); engineering is-it-sound judgement (`code-review`) | *Is it good / is it ours / is it sound?* — standing to say off-pitch, stop |
+| 8 | **Close** | `producer` | drain rule (doctrine 6); `process-retro`; `plan/risk-register.md` walk; `knowledge-keeper` for the vault; doctrine 13 for lessons | Every task done/moved/dropped-with-reason · process retro run (`plan/<phase>-retro.md`) · risk register walked row-by-row · vault describes **what was built** · phase file signed off · lessons written into the owning guide · remaining phases re-scoped |
 
 ## The inner loop is the whole game
 
@@ -57,6 +67,16 @@ Steps 3–7 repeat **per task** and are the repeatable unit anyone can follow:
 2. **The builder hands off; it never verifies its own work** (steps 4→5). This is doctrine 1, and it is violated by convenience.
 3. **Two different questions, two different gates:** the quality gate (step 6) asks *is it broken/correct*; the review (step 7) asks *is it good*. Both are fresh eyes; neither is the builder. For level work these split further — structural verification (footprints, seating, collision, a full-gravity walk on an unlit level) runs before visual QA (which needs the level lit); see `guides/workflow.md`.
 4. **Craft goes through the senior eye before the owner — always.** The owner is never the first competent reviewer of authored look or feel (`guides/workflow.md`).
+
+## Cross-cutting acceptance criteria — design-in now, don't retrofit
+
+Some concerns are **cheap to design in during the current phase and ruinously expensive to bolt on later** — so they are enforced as **per-task acceptance criteria**, not deferred to their full P3 pass. The producer adds the applicable line to a task's acceptance in `plan-milestone`; the verifying agent checks it like any other criterion:
+
+- **Externalize strings** — on *any* task with player-facing text (UI, signage, prompts). No hard-coded display strings; text goes through the localization path from day one (owner `localization`; full pipeline is P3, but the discipline starts at P1).
+- **Accessibility basics** — on *any* player-facing surface (a screen, a control scheme, a feedback channel). Remappable input, legible contrast, no colour-only signalling, subtitle-ready (owner `accessibility` for depth; the basics live with `ui-ux-designer` in-screen; full pass is P3).
+- **Compliance framing flagged** — on *anything* touching minors, personal data, payments, or the public surface. The task carries a compliance-framing flag so `compliance-advisor` frames the risk *before* it is built, not after (owner-reserved; needs qualified counsel — R7/R8 in `plan/risk-register.md`).
+
+These fire in whatever phase the task lands in. The **full** localization pipeline, accessibility pass, and compliance implementation are scheduled disciplines (§3.5) — these criteria are the cheap-window enforcement that keeps those later passes from becoming retrofits.
 
 ## Serial vs parallel
 
@@ -69,13 +89,25 @@ The **editor is single-threaded** — MCP calls run on the game thread and deadl
 
 ## Close — the drain rule (doctrine 6)
 
-A phase file is signed off **only when every unchecked task has a new home**: done · moved to `roadmap.md` · moved to a `TODO` · consciously dropped *with a reason*. Then: confirm the vault describes what was **built**, not what was planned; update `roadmap.md`; capture every lesson into its owning guide **in the same session** (doctrine 13); mark the phase file complete. "We'll remember" is not one of the options.
+A phase file is signed off **only when every unchecked task has a new home**: done · moved to `roadmap.md` · moved to a `TODO` · consciously dropped *with a reason*. Then: confirm the vault describes what was **built**, not what was planned; update `roadmap.md`; capture every lesson into its owning guide **in the same session** (doctrine 13). "We'll remember" is not one of the options.
 
-**Then, before the next phase opens: the re-scope review.** Every phase-close triggers a mandatory review of all remaining phases in the roadmap (`plan/game-roadmap.md`) — for each, decide **carry forward / rescope / drop**, and rewrite it as current (doctrine 12). A closing phase almost always reshapes a downstream assumption; a downstream forecast is never treated as locked truth, so it is re-scoped against what this phase actually taught *before* any of it is built. This is the discipline that makes decomposing the whole arc up front a living forecast rather than a waterfall (`skills/bootstrap-from-spec`).
+**Then two required close sub-steps run before sign-off:**
+- **Process retro** (`process-retro`, owner `producer`) — interrogate how the studio *worked* this phase: what in the SOP, a skill, or an agent's method failed, was missing, or slowed the phase down, and feed the fix back into the process the same session. Produces a committed `plan/<phase>-retro.md`. This is distinct from doctrine-13 craft-lesson capture (which fixes the *content* of a craft/engine lesson into its guide); the retro fixes the *process*.
+- **Risk register walk** (`plan/risk-register.md`, owner `producer`) — walk **every row** as part of the re-scope: is it retired (mitigated/accepted/gone — say why and close it), still open (carry forward, re-score against what the phase taught), or newly surfaced (add it with an owner, mitigation, and review-gate)? The three 🔴 long-lead rows (R1/R2/R3) are checked first. Never delete a row silently.
 
-## Skills this SOP references that are not yet authored
+**Then, before the next phase opens: the re-scope review.** Every phase-close triggers a mandatory review of all remaining phases in the roadmap (`plan/game-roadmap.md`) — for each, decide **carry forward / rescope / drop**, and rewrite it as current (doctrine 12). A closing phase almost always reshapes a downstream assumption; a downstream forecast is never treated as locked truth, so it is re-scoped against what this phase actually taught *before* any of it is built. This is the discipline that makes decomposing the whole arc up front a living forecast rather than a waterfall (`skills/bootstrap-from-spec`). Only after the drain, the retro, and the risk walk is the phase file marked complete.
 
-`.claude/skills/` does not exist yet — the agents encode these methods, but the callable skills must be written. **Author next, in SOP order:** `plan-milestone` (frame + decompose), `team-execute` (the producer autopilot — named by the constitution), `resume-work` (cold-session pickup), `verify-engine-claim` (`engine-verifier`), `vault-doc-update` (`knowledge-keeper`), `harden-endpoint` (`security-reviewer`), the `qa-visual` battery and the `qa-network` harness as invocable procedures, and `decide` (`technical-director`). The build-support skills `fab-acquire` and `ingest-asset` (Part 2) are also unwritten here. Until they exist, run the method from the owning agent's definition.
+## Skills this SOP references
+
+The callable procedures in `.claude/skills/` that this SOP dispatches to, grouped by where they sit in the loop:
+
+- **Orient & plan:** `resume-work` (cold-session pickup) · `bootstrap-from-spec` (standup → phase roadmap) · `plan-milestone` (frame + decompose) · `asset-breakdown` (phase bill-of-materials) · `team-execute` (the producer autopilot).
+- **Establish truth before building:** `verify-engine-claim` (`engine-verifier`) · `vault-doc-update` (`knowledge-keeper`) · `tech-design` (engineering-heavy TDD, pre-build) · `spike` (prove an unknown in isolation, backport or discard).
+- **Build & acquire:** `fab-acquire` → `ingest-asset` (assets in) · `harden-endpoint` (`security-reviewer`, client-reachable surface) · `activate-discipline` (bring a dormant discipline online at its phase, §3.5).
+- **Verify & judge:** `qa-visual` battery · `qa-network` harness · `qa-functional` (spec-match correctness) · `perf-gate` (perf budget, per-task check + P3–P4 hard gate) · `build-validate` (cooked build boots) · `security-reviewer` · `creative-review` (is-it-good, art) · `code-review` (is-it-sound, engineering) · `playtest` (`user-researcher`, "found the fun" signal) · `decide` (`technical-director`, agent-decidable forks).
+- **Close & freeze:** `process-retro` (phase process retro → `plan/<phase>-retro.md`) · `content-lock` (Phase-3 content-complete freeze).
+
+Each skill owns its own *how*; this SOP names *when and in what order* it runs. Where a skill is not yet authored (the deferred cross-cutting passes in §3.5), run the method from the owning agent's definition until it is.
 
 ---
 
@@ -89,7 +121,7 @@ The SOP points at real resources. Here is the inventory.
 
 ## Skills — the callable procedures (`.claude/skills/`)
 
-**Not yet scaffolded.** The constitution references `skills/team-execute` and the autopilot; the SOP above lists the skills to author, in priority order. Until each exists, its method lives in the owning agent's definition.
+**Authored and callable.** The SOP dispatches to them at the steps and gates named in Part 1; the full inventory grouped by loop stage is in "Skills this SOP references" above. Each skill owns its *how*; the SOP owns *when and in what order*. The only unwritten ones are the deferred cross-cutting passes scheduled in §3.5 (authored at their activation phase); until then their method lives in the owning agent's definition.
 
 ## Modules — reusable system contracts (`.claude/modules/`)
 
@@ -216,27 +248,30 @@ Each phase passes its gate only when its deliverables **exist and are committed*
 - Every core unknown spiked in isolation, reviewed, **and backported to the vault** — all builders + `engine-verifier` (doctrine 3, 10).
 - One door / zone transition, server-authoritative and hardened — `network-engineer` + `security-reviewer`; proven server + 2 clients — `qa-network`.
 - GAS kit skeleton — `gameplay-engineer`; a proven Fab→ingest→place asset pipeline — `tech-artist`.
-- Slice passes the multi-view battery and `creative-review`.
+- Slice passes the multi-view battery (`qa-visual`) and `creative-review`.
+- **The "found the fun" signal comes from a moderated `playtest` with real target-audience players** (`user-researcher`) — the qualitative verdict the gate needs; expert review alone is not it.
 - **Long-lead groundwork now active (even if not built): backend/online-services architecture decided; moderation/trust&safety policy sketched; UGC creator-tooling concept spiked; string externalization & accessibility principles adopted.**
-- *Gate:* Director + owner — the fun is found and it is feasible.
+- *Gate:* Director + owner — the fun is found (via `playtest`) and it is feasible.
 
 ### Phase 2 — Production → gate: **alpha (feature-complete)**
 - Every core system implemented (not polished); one path playable end-to-end.
 - **Backend/online services live** (accounts, save-infra, matchmaking) — *requires the backend discipline active by now.*
 - UGC creator tooling functional; economy & progression tuned — `game-designer`.
 - Districts blocked out and art-passed; character + animation pipeline delivering; crowd/NPC AI populating the city.
-- Analytics/telemetry instrumented; functional/gameplay QA on every feature; performance budgets enforced.
-- *Gate:* feature-complete.
+- Analytics/telemetry instrumented; functional/gameplay QA on every feature (`qa-functional`); performance budgets enforced (`perf-gate`, per-task check on hot-path work).
+- **From P2 onward, a cooked build must boot** — `build-validate` (`build-engineer`) cooks, packages, and smoke-launches the artifact, and confirms the dedicated server boots and a client connects. A green editor session proves none of this.
+- *Gate:* feature-complete — and the milestone build passes `build-validate`.
 
 ### Phase 3 — Content-lock → gate: **beta (content-complete)**
-- All content in and locked; full art/lighting/audio pass on every space; cinematics in.
-- Performance within budget on target; build/release pipeline producing cooked, packaged builds on CI.
+- All content in and locked (`content-lock`, owner `producer` with the discipline leads) — the freeze applies to authored content, not the player-UGC stream; after it, only fixes enter the build.
+- Full art/lighting/audio pass on every space; cinematics in.
+- **Performance within budget on target — the P3–P4 hard `perf-gate`** (`performance-engineer`), measured on a representative source-built target, not a PIE number; build/release pipeline producing cooked, packaged builds on CI, each passing `build-validate`.
 - Age-verification & compliance implemented; moderation tooling live; localization underway; accessibility pass.
-- Playtesting/user-research feeding back; full client-surface security review.
-- *Gate:* content-complete — no new content after.
+- Playtesting/user-research feeding back (`playtest`); full client-surface security review.
+- *Gate:* content-complete (`content-lock`) — no new authored content after.
 
 ### Phase 4 — Ship → gate: **gold (owner)**
-- Cook/package/ship pipeline validated; perf certified on target hardware; server fleet provisioned.
+- Cook/package/ship pipeline validated (`build-validate`); perf certified on target hardware — the final P3–P4 hard `perf-gate` (`performance-engineer`); server fleet provisioned.
 - Store presence & monetization live; legal/IP/privacy sign-off; localization & accessibility complete.
 - Live-ops runbooks; day-one moderation staffed; final security + network QA.
 - *Gate:* gold — owner.
@@ -301,6 +336,8 @@ The **bold** cells are the trap: backend, UGC, and moderation each need real wor
 
 Every discipline is staffed; each is switched on — put on the critical path — at the phase below. This table sequences every discipline: the phase each role **activates**, and the risk if it activates late. A role scheduled for a later phase is staffed now and dormant until its window. It is a **living decision record** (doctrine 12): the "activates" calls are the recommended defaults and the owner adjusts them — but a role never drops off the schedule silently; it moves only when the owner rewrites its window.
 
+**Every activation runs through the `activate-discipline` on-ramp.** The **Activates** column names *when* a role comes online; `activate-discipline` (triggered by the `producer` on schedule, run by the activating discipline) is *how* — the procedure that brings a dormant discipline into a phases-deep build oriented against the current vault, not re-deriving settled facts cold. It ends with the discipline's first artifact and a registration with the producer.
+
 **Three foundations cannot be spun up at their peak** and are flagged 🔴 long-lead — their heavy build lands later, but their design/architecture must be active in Phase 1:
 - **Backend / online-services** — its persistence/account schema shapes the save format and every server-authoritative system.
 - **Moderation / trust & safety** — the moderation surface exists the instant UGC ships.
@@ -308,9 +345,9 @@ Every discipline is staffed; each is switched on — put on the critical path �
 
 | Discipline | Snapshot | Activates | Risk if it activates late |
 |---|---|---|---|
-| 🔴 Backend / online services | HAVE | **P1 architect · P2 build** | Save format, economy, and every server-authoritative system are shaped by the persistence/account schema. Retrofitting forces a data migration and re-architecture of systems built on wrong assumptions. |
-| 🔴 Community / moderation / trust & safety | HAVE | **P1 policy · P2 tooling** | UGC + all-ages + mixed-social creates the moderation surface the instant UGC ships. No tooling = no safe launch; policy retrofitted after content is in is far costlier. |
-| 🔴 Character / animation / cinematics | HAVE | **P1 spike · P2 build** (cinematics P3) | Heads the rig→anim→gameplay chain; a late start cascades into feel-tuning and blocks cinematics. MetaHuman/Fab shortens lead time but the identity call is upstream. |
+| 🔴 Backend / online services | HAVE | **P1 architect · P2 build** | Save format, economy, and every server-authoritative system are shaped by the persistence/account schema. Retrofitting forces a data migration and re-architecture of systems built on wrong assumptions. *(`plan/risk-register.md` R1)* |
+| 🔴 Community / moderation / trust & safety | HAVE | **P1 policy · P2 tooling** | UGC + all-ages + mixed-social creates the moderation surface the instant UGC ships. No tooling = no safe launch; policy retrofitted after content is in is far costlier. *(`plan/risk-register.md` R2)* |
+| 🔴 Character / animation / cinematics | HAVE | **P1 spike · P2 build** (cinematics P3) | Heads the rig→anim→gameplay chain; a late start cascades into feel-tuning and blocks cinematics. MetaHuman/Fab shortens lead time but the identity call is upstream. *(`plan/risk-register.md` R3)* |
 | In-game UGC / creator tooling | HAVE | **P1 spike · P2 build** | It *is* the pitch ("every door leads somewhere else"). Its data model constrains backend, moderation, and the economy — a late spike risks building systems it can't plug into. |
 | Crowd / NPC AI | HAVE | P2 | City density is a pillar; activate past P2 and the city reads empty at alpha. A core-production system, not polish. |
 | Performance / optimization | HAVE | P1 budgets · P2 ongoing · P3–P4 hard gate | Perf debt compounds; a late pass on a locked build forces content cuts. |
@@ -328,6 +365,17 @@ Every discipline is staffed; each is switched on — put on the critical path �
 | Playtesting / user research | HAVE | P1 | "Found the fun" is a playtest verdict — the slice gate needs real player signal, not only internal review. |
 
 > **One discipline, one owner — never a persona carrying disciplines that fight for its attention.** The art/design specialists are each their own role: `concept-artist`, `vfx-artist`, `character-artist`, `animator`, and `ui-ux-designer` (which owns UI logic *and* visuals as one — see its row). The engineering/ops disciplines — `performance-engineer`, `ai-engineer` (crowd/NPC AI), `build-engineer`, `backend-engineer` — are each a discrete owner, not bundled into one overloaded role. Narrative/worldbuilding is likewise its own owner, `narrative-designer` (its onboarding-as-UI half stays `ui-ux-designer`'s).
+
+### Deferred cross-cutting skills — authored at activation
+
+Four cross-cutting *skills* are scheduled but **deliberately not yet authored** — writing them before their discipline goes on the critical path is premature (the shape of the work is not yet known). Each is authored **at its activation phase**, by its owning discipline, when the phase makes the need concrete. Until then, the cheap-window design-in is enforced by the per-task cross-cutting acceptance criteria (Part 1), and the method lives in the owning agent's definition.
+
+| Deferred skill | Owner | Authored at | Covers |
+|---|---|---|---|
+| `loc-pipeline` | `localization` | **P3** | Extract → translate → reimport → build; text-fit and pseudo-localization; culturalization review. (P1–P2 externalize-strings acceptance criterion feeds it.) |
+| `a11y-pass` | `accessibility` | **P3** | The dedicated accessibility full pass against recognised game-accessibility standards. (P1–P2 accessibility-basics acceptance criterion feeds it.) |
+| `asset-optimize` | `performance-engineer` / `tech-artist` | **P2/P3** | LODs, texture/mesh budgets, draw-call and memory reduction on placed content — the optimization pass `perf-gate` measures against. |
+| `load-soak` | `performance-engineer` + `backend-engineer` | **P2–P3** | Sustained-load / soak testing of the persistent world at the CCU target on a representative source-built server (R6/R9 in `plan/risk-register.md`). |
 
 ---
 

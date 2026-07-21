@@ -19,10 +19,10 @@ Doctrine this enforces: **spec-first** (2), **traceability** (8), **spike-before
 5. **Write acceptance criteria for every task.** What "done" means, concretely and testably — the yardstick a fresh reviewer measures against, not an opinion.
 6. **Name the test-plan for every task, before build.** The verifying agent (`qa-visual` / `qa-network` / `qa-functional` / `security-reviewer` / `engine-verifier`) and its check, declared now — or `[no-test: <reason>]`. No third option (doctrine 8).
 7. **Order by dependency.** Sequence tasks so no task starts before its inputs exist (`guides/production-pipeline.md` §3.3). Mark editor-mutating tasks — they serialize; read-only tasks can run in parallel.
-8. **Route the spec-first work.** Anything spatial gets a committed spec from `level-designer` before build; a system gets one from `game-designer`; the Director approves. No spec, no build.
-9. **List the unknowns as a spike lane.** Every guess-based approach gets an isolated-throwaway-map spike task (doctrine 3) with a reviewer, and every engine-behaviour assumption gets a `verify-engine-claim` task. Findings backport to the vault **before** the main build — the backport is a task, not an afterthought.
+8. **Route the spec-first work.** Anything spatial gets a committed spec from `level-designer` before build; a system gets one from `game-designer`; the Director approves. An **engineering-heavy system** (persistence/save schema, netcode design, GAS architecture, a transaction model, a service API) additionally names a committed, fresh-reviewed **`tech-design`** TDD as a pre-build deliverable — the engineering equivalent of the spec-first gate. No spec/TDD, no build.
+9. **List the unknowns as a spike lane.** Every guess-based approach gets an isolated-throwaway-map **`spike`** task (doctrine 3) with a reviewer, and every engine-behaviour assumption gets a `verify-engine-claim` task. Findings backport to the vault **before** the main build — the backport is a task, not an afterthought.
 10. **Commit `plan/<milestone>.md`.** Include a **Current state** ("you are here") line at the top and the task list with status markers: `[ ]` not started · `[~]` in progress · `[!]` blocked · `[x]` done-and-verified.
-11. **Stop for the review.** The plan is reviewed before time is spent on spikes. Hand to `team-execute` to run it.
+11. **Stop for the review.** The plan is reviewed before time is spent on spikes. Once decomposed, `asset-breakdown` (owner `tech-artist`) turns the phase into its asset bill-of-materials — every asset, classified HAVE / ACQUIRE / GENERATE — which feeds `fab-acquire` → `ingest-asset` → build. Then hand to `team-execute` to run it.
 
 ## Task shape (every row)
 
