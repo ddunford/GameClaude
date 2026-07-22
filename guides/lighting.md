@@ -102,6 +102,7 @@ A lit scene is at bar when:
 - **Wrong colour temperature for the mood or the source.** A warm scene that should be cold night; a "sunlit" interior lit at candle-warmth; a single flat temperature with no warm/cool contrast. (Principle 3.)
 - **Fake falloff.** A hard light-radius cutoff, or a source that lights evenly regardless of distance — reads as engine, not world. (Principle 7.)
 - **Too many shadow-casting lights.** Motivation ignored, lights sprayed everywhere, frame cost blown for no readability gain. (Principle 9.)
+- **A QA-readability scaffold that fights a near-black default material.** On a whitebox blockout, masses often carry the engine `WorldGridMaterial` (an "unset material" default, ~0.08 albedo — effectively black). No exposure or light rig can make it read without blowing everything brighter to white: light is the wrong lever. A readability scaffold must FIRST re-material every mass to a neutral graybox (~0.18, e.g. `BasicShapeMaterial`) — standard blockout practice that also *helps* massing/silhouette QA — and only then light it. Pair this with the capture-path caveat: **the SceneCapture QA path has no Lumen bounce and DFAO-starves canyon faces, so light with strong near-horizontal shadowless directional fill, not skylight/ambient** (engine mechanics + the destroy-PPV crash, the no-Lumen capture, and the exposure-sign conventions all in `guides/unreal-engine.md §5`).
 
 ---
 
