@@ -89,6 +89,9 @@ The blockout was validated on foot; the dressing is too. Nothing here is judged 
 - **Dressing with no story.** Props that decorate but don't answer *who/what*. Every object earns its place by implying occupancy.
 - **Dead / empty OR over-stuffed.** A grey-box with textures (nothing at eye level, no human trace) or a hoarder's room (no negative space, no hierarchy). Both are unreadable; aim for composed density with rest.
 - **Floating / clipped / trunk-buried props.** Seat failures the eye-level view hides. Verify true bases top-down with `GeometryAuditTools`.
+- **Wonky rotation — the placement tell that reads as broken.** A prop's **yaw is never arbitrary**: square it to its aisle/wall/building, or angle it deliberately with a reason (a cart pulled askew to imply use). A stall skewed 20° for nothing, a food cart cross-wise blocking its own lane, a shelf off-parallel to the wall behind it — each reads instantly as "an object dropped by a machine," the loudest not-a-place tell after the asset-flip. Set an intentional rotation on **every** actor; never leave the placement default or a random spin.
+- **Props on top of each other / one-sided bunching.** `sweep_interpenetration` returning "0 intended" is NOT proof — an AABB category can hide real clipping. Prove it clean by eye on a **bright top-down + N/E/S/W obliques judged relative to the buildings** (the `qa-visual` placement audit). Distribute with intent across *both* sides of a street; do not pile the whole prop set against one wall and leave the other bare.
+- **Overhead strings at chaotic diagonals.** Festoons / wires / bunting run **coherent lines** — along the street, or squared across it bay-to-bay — never a tangle of random diagonal spans. A criss-cross of angled strings reads as broken, not festive.
 - **Fly-cam composition.** Dressed for an angle the player never stands at. Compose and judge the walked framings.
 
 ---
@@ -105,6 +108,8 @@ The blockout was validated on foot; the dressing is too. Nothing here is judged 
 - [ ] Negative space preserved; navigability and readability intact.
 - [ ] Scale consistent to one human reference; texel density enforced.
 - [ ] Everything seated — `measure_true_base` + `sweep_interpenetration`, top-down checked; nothing floating / clipped / in trunks.
+- [ ] **Every prop's rotation is intentional** — squared to aisle/wall/building or deliberately angled with a reason; no arbitrary/default yaw; nothing cross-wise blocking its own lane.
+- [ ] **Placement proven clean on a bright top-down + N/E/S/W obliques judged relative to the buildings** — no props on top of each other, no one-sided bunching, overhead strings run coherent lines not random diagonals. (An AABB "0 intended" is not proof.)
 - [ ] Placed only from `Content/ElseCity` (ingested), never a vendor path.
 - [ ] Iterated with `lighting-artist` — composition and light authored together.
 - [ ] Handed to `qa-visual` → `art-director` → `creative-review`. Not self-approved, not straight to owner.
