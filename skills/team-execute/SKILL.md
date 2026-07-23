@@ -41,4 +41,5 @@ Phase · exact step · what's verified (name the verifier) · what's blocked (on
 - A verifier or judge that is the same agent as the builder.
 - Skipping the verify→judge chain to chain builds.
 - Running past an owner gate.
-- Letting the `TODO.md` queue or its "you are here" line rot, or building from a task not tracked in it.
+- **Relaying a "done" / "ready to sign" for a VISUAL deliverable you have not LOOKED AT yourself.** Before you tell the owner a scene/level is ready, capture it multi-angle at true committed exposure and read it with your own eyes — a verifier's PASS is not a substitute (doctrine 9 binds the producer too). Especially: if the dominant surfaces (buildings, ground, sky) read as blank/graybox, the honest word is "reads as a blockout," never "on-pitch, ready to sign." Presenting an agent's green verdict on a scene you haven't seen is how a boxes-with-props level gets walked to the owner as finished.
+- Letting the live queue (beads `bd`) or the "you are here" line rot, or building from a task not tracked in it.
