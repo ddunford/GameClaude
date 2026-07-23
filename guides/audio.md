@@ -135,6 +135,16 @@ A soundscape is at bar when:
 
 ---
 
+## GENERATION — producing the raw audio (ElevenLabs)
+
+Raw audio is **generated, not licensed from a pack** — via **ElevenLabs**, driven through the **authenticated site** with **Playwright MCP** + the `.env.services` login (the same browser-automation pattern as Fab acquisition, not an API key). The `sound-designer` agent owns the workflow; the pipeline mechanics a soundscape depends on:
+
+- **ElevenLabs Sound Effects returns Opus/Ogg — re-encode before import.** The download is Opus-in-Ogg; **decode it in-browser via the Web Audio API and re-encode to WAV (48 kHz / 16-bit)** before importing to `Content/<Project>/Audio/`. Import the WAV, never the raw Ogg.
+- **Set the duration explicitly for a loop bed — "Auto" defaults to ~1.5 s.** The generator's Auto duration produces a ~1.5 s clip, far too short for a seamless ambient bed. For a bed, set the duration explicitly (e.g. 30 s) and use the tool's **seamless-loop** mode — a 1.5 s "bed" that ticks like a metronome is the anti-fatigue failure of Principle 9, caught at the source.
+- **Never enter credentials as a tool-call parameter.** A Playwright **accessibility-tree snapshot can reflect a typed password value into the transcript** once — so relay credentials through a **localhost-only endpoint the browser fetches**, never as a `type`/`fill` parameter carrying the secret. **If a password is ever exposed this way, rotate it** — the rotation is the only thing that stops the exposure standing.
+
+---
+
 ## Engine cross-reference
 
 The **how** in this engine will be captured in `guides/unreal-engine.md` as we hit each mechanic (the PLA-drops-audio rule is there now, §5); until then the UE Audio docs are the reference for the mechanics behind the craft above:
@@ -143,6 +153,7 @@ The **how** in this engine will be captured in `guides/unreal-engine.md` as we h
 - **Sound Concurrency** — the voice-limiting/culling rules behind Principle 9 (max count + resolution: stop oldest / stop quietest / prevent new).
 - **MetaSounds** — procedural source generation for variation and randomisation (Principle 9) and interactive one-shots.
 - **A Packed Level Actor DROPS interior point audio (`AmbientSound`/`UAudioComponent`) at pack time, exactly as it drops lights** — the ISM builder clusters only `UStaticMeshComponent`s, so audio takes the "Component was not packed" warning path. So an interior point source must be authored as a **separate external World-Partition actor** (the same treatment door light-spill / neon gets), never inside the PLA. Mechanism + citations: `guides/unreal-engine.md §5`.
+- **The client-side rule (Principle 10) is engine-enforced by `replicates=false` on the audio actor AND a `ClientOnly` runtime Data Layer whose instance is present in the map** — together they keep audio off the wire *and* off the dedicated server (zero server memory, physics, replication). Mechanism + the load-filter-needs-an-instance gotcha: `guides/unreal-engine.md §5` (and §2 for the Data Layer load filter).
 
 The rule: **this guide tells you what a good soundscape *is*; the engine reference tells you what UE will and won't *let you do* to build it.** On any conflict of engine fact, the source-cited engine guide wins — raise a `[verify]` via `engine-verifier`.
 
