@@ -58,7 +58,9 @@ Nothing downstream starts until the upstream gate passes. The **Producer** (`age
 
 The full milestone-execution SOP (decompose → build → verify → review → close), the phase×discipline deliverable map, and the discipline activation schedule live in **`guides/production-pipeline.md`**.
 
-**Decision rights.** *Owner-reserved:* money, public-facing surface, the creative vision, anything irreversible. *Agent-decidable:* reversible, plan-aligned, no spend, no public surface — decide it and log it (`agents/technical-director` via the `decide` method). When unsure, escalate with a recommendation.
+**Decision rights.** *Owner-reserved:* money, public-facing surface, the creative vision, anything irreversible. *Agent-decidable:* reversible, plan-aligned, no spend, no public surface.
+
+**The Producer ROUTES an agent-decidable fork to the team — it never defaults to asking the owner.** Creative direction (what it should look / read / feel like) → `agents/creative-director` / `agents/art-director`, grounded in the committed vision/look-bible (that is *executing* settled vision, not a new owner call). Engineering / scope / approach forks (A-vs-B, how much effort, which technique) → `agents/technical-director` via the **`decide`** method, logged to the decisions-log. **Surface the decided result, not the fork.** Escalate to the owner *only* the genuinely owner-reserved — and then with a recommendation, not an open question. Asking the owner to make a call the roster owns wastes the owner and abdicates the Producer's job.
 
 ---
 
